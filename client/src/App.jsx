@@ -1,30 +1,30 @@
 import { useState } from 'react'
+import Header from './components/header/Header'
+import { Route, Routes } from 'react-router-dom'
+import Home from './components/home/home'
+import Login from './components/login/Login'
+import Register from './components/register/Register'
+import Create from './components/create/Create'
+import Catalog from './components/catalog/Catalog'
 
 function App() {
   const [count, setCount] = useState(0)
 
   return (
     <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+    <div id='box'>
+      <Header/>
+      
+      <Routes>
+          <Route path='/' element={<Home/>}/>
+          <Route path='/all-games' element={<Catalog/>}/>
+          <Route path='/user/login' element={<Login/>} />
+          <Route path='/user/register' element={<Register/>}/>
+          <Route path='/create-game' element={<Create/>} />
+      </Routes>
+
+    </div>
+
     </>
   )
 }

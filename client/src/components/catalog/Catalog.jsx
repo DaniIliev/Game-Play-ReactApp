@@ -1,37 +1,24 @@
-export default function Catalog(){
+import { useEffect, useState } from "react"
+import * as gameServices from '../../services/gameService'
+import GameItem from "./gameItem/GameItem"
 
+export default function Catalog(){
+    const [games, setGames] = useState([])
+
+    useEffect(() => {
+        gameServices.getAll()
+            .then((result) => setGames(result))
+            .catch((err) => console.log(err))
+    }, [])
 
     return(
         <>
-                <section id="catalog-page">
+            <section id="catalog-page">
             <h1>All Games</h1>
-            <div className="allGames">
-                <div className="allGames-info">
-                    <img src="./images/avatar-1.jpg"/>
-                    <h6>Action</h6>
-                    <h2>Cover Fire</h2>
-                    <a href="#" className="details-button">Details</a>
-                </div>
-
-            </div>
-            <div className="allGames">
-                <div className="allGames-info">
-                    <img src="./images/avatar-1.jpg"/>
-                    <h6>Action</h6>
-                    <h2>Zombie lang</h2>
-                    <a href="#" className="details-button">Details</a>
-                </div>
-
-            </div>
-            <div className="allGames">
-                <div className="allGames-info">
-                    <img src="./images/avatar-1.jpg"/>
-                    <h6>Action</h6>
-                    <h2>MineCraft</h2>
-                    <a href="#" className="details-button">Details</a>
-                </div>
-            </div>
-            <h3 class="no-articles">No articles yet</h3>
+                {games.map((game) => (
+                        <GameItem key={game._id} {...game}/>
+                    ))}
+                {games.length == 0 && <h3 className="no-articles">No articles yet</h3>}
         </section>
         </>
     )

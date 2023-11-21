@@ -11,3 +11,16 @@ export const login = async (email, password) => {
 
     return result
 }
+
+export const register = async (email,password,confirmPassword) => {
+    if(password != confirmPassword){
+        throw Error('Password don\'t match!')
+    }
+
+    const result = await request.post(`${baseUrl}/register`,{
+        email,
+        password
+    })
+
+    return result
+}

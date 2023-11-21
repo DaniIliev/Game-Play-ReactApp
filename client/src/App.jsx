@@ -18,7 +18,6 @@ function App() {
   const loginSubmitHandler = async (values) => {
     try{
       const result = await userService.login(values.email, values.password)
-      console.log(result)
       setAuth(result)
       navigate('/')
     }catch(err){
@@ -26,8 +25,20 @@ function App() {
     }
   }
 
+  const registerSubmitHandler = async (values) =>{
+    try{
+      const result = await userService.register(values.email, values.password, values.confirmPassword)
+      setAuth(result)
+      console.log(result)
+      navigate('/')
+    }catch(err){
+      console.log(err)
+    }
+
+  }
   const values = {
-    loginSubmitHandler
+    loginSubmitHandler,
+    registerSubmitHandler
   }
   return (
     <>

@@ -9,18 +9,34 @@ const buildOptions = (data) => {
         options.body = JSON.stringify(data)
     }
 
+    const token = localStorage.getItem('accessToken');
+
+    if(token){
+        options.headers = {
+            ...options.headers,
+            'X-Authorization': token
+        }
+    }
+
     return options
 }
 
 const request = async (method, url, data) => {
+
     const responce = await fetch(url, {
         method,
         ...buildOptions(data)
     })
 
+    if(responce.status === 204){
+        return {}
+    }
+
     const result = await responce.json()
 
-
+    if(!responce.ok){
+        throw Error(result)
+    }
     return result
 }
 

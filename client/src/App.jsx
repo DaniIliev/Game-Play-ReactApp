@@ -11,7 +11,11 @@ import * as userService from './services/userService'
 import AuthContext from './context/userContext'
 
 function App() {
-  const [auth, setAuth] = useState([])
+  const [auth, setAuth] = useState(() => {
+    localStorage.removeItem('accessToken')
+
+    return {}
+  })
 
   const navigate = useNavigate()
 
@@ -19,6 +23,9 @@ function App() {
     try{
       const result = await userService.login(values.email, values.password)
       setAuth(result)
+
+      localStorage.setItem('accessToken', result.accessToken);
+
       navigate('/')
     }catch(err){
       console.log(err)
@@ -29,7 +36,9 @@ function App() {
     try{
       const result = await userService.register(values.email, values.password, values.confirmPassword)
       setAuth(result)
-      console.log(result)
+
+      localStorage.setItem('accessToken', result.accessToken);
+
       navigate('/')
     }catch(err){
       console.log(err)
@@ -38,7 +47,11 @@ function App() {
   }
   const values = {
     loginSubmitHandler,
-    registerSubmitHandler
+    registerSubmitHandler,
+
+    username: auth.username || auth.email,
+    email: auth.email,
+    isAuthenticated: !!auth.accessToken,
   }
   return (
     <>

@@ -5,14 +5,19 @@ import AuthContext from "../../context/userContext"
 import * as commentService from '../../services/commentServoce'
 
 export default function GameDetails(){
-    const {username} = useContext(AuthContext)
+    const {email} = useContext(AuthContext)
     const [game, setGame] = useState({})
     const [comment, setComment] = useState([])
+    const [comments, getAllComments] = useState([])
     const {gameId} = useParams()
     
     useEffect(() => {
+        commentService.getAll(gameId)
+                .then(result => getAllComments(result))
+                .catch(err => console.log(err))
+
         gameService.getOne(gameId)
-                .then((data) => setGame(data))
+                .then((data) => console.log(data))
                 .catch((err) => console.log(err))
     }, [gameId])
 
@@ -49,12 +54,13 @@ export default function GameDetails(){
                 <h2>Comments:</h2>
                 <ul>
                     {/* <!-- list all comments for current game (If any) --> */}
-                    <li className="comment">
-                        <p>Content: I rate this one quite highly.</p>
-                    </li>
-                    <li className="comment">
-                        <p>Content: The best game.</p>
-                    </li>
+                    {comments && (
+                        comments.map(comment => {
+                            <li className="comment">
+                            <p>{comment}</p>
+                            </li>
+                        })
+                    )}
                 </ul>
                 {/* <!-- Display paragraph: If there are no games in the database --> */}
                 <p className="no-comment">No comments.</p>

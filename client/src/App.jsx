@@ -7,22 +7,15 @@ import Register from './components/register/Register'
 import Create from './components/create/Create'
 import Catalog from './components/catalog/Catalog'
 import GameDetails from './components/details/GameDetails'
-import * as userService from './services/userService'
-import AuthContext from './context/userContext'
 import Logout from './components/logout/Logout'
+import { AuthProvider } from './context/userContext'
 
 function App() {
-  const [auth, setAuth] = useState(() => {
-    localStorage.removeItem('accessToken')
+  // const [auth, setAuth] = useState(() => {
+  //   localStorage.removeItem('accessToken')
 
-    return {}
-  })
-
-  const navigate = useNavigate()
-
-
-
-
+  //   return {}
+  // })
 
   return (
     <>

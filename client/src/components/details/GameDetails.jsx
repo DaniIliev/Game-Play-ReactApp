@@ -1,18 +1,17 @@
 import { useContext, useEffect, useReducer, useState } from "react"
-import { useParams } from "react-router-dom"
+import { Link, useNavigate, useParams } from "react-router-dom"
 import * as gameService from '../../services/gameService'
 import AuthContext from "../../context/userContext"
 import * as commentService from '../../services/commentServoce'
 import { reducer } from "./commentReducer"
 
 export default function GameDetails(){
-    const {email} = useContext(AuthContext)
+    const {email, userId} = useContext(AuthContext)
     const [game, setGame] = useState({})
     const [comments, dispatch] = useReducer(reducer,[])
-    // const [comment, setComment] = useState([])
-    // const [comments, getAllComments] = useState([])
     const {gameId} = useParams()
-    
+    const navigate = useNavigate()
+
     useEffect(() => {
         commentService.getAll(gameId)
                 .then(result => {
@@ -39,13 +38,24 @@ export default function GameDetails(){
             formData.get('comment'),
         )
         newComment.owner = {email}
+
         dispatch({
             type: 'ADD_COMMENT',
             payload: newComment
         })
     }
-    console.log(comments)
-    return(
+
+    const deleteButtonClickHandler = async (e) =>{
+        e.preventDefault()
+
+        const hasConfirm = confirm(`Are you sure you want to delete the post with name ${game.title}?`)
+
+        if(hasConfirm){
+            gameService.del(game?._id)
+                .then(() => navigate('/all-games'))
+        }
+    }
+        return(
         <section id="game-details">
         <h1>Game Details</h1>
         <div className="info-section">
@@ -61,7 +71,6 @@ export default function GameDetails(){
                 {game.summary}
             </p>
         </div>
-            {/* <!-- Bonus ( for Guests and Users ) --> */}
             <div className="details-comments">
                 <h2>Comments:</h2>
                 <ul>
@@ -71,15 +80,14 @@ export default function GameDetails(){
                             </li>
                         ))}
                 </ul>
-                {/* <!-- Display paragraph: If there are no games in the database --> */}
                 {comments.length === 0 && <p className="no-comment">No comments.</p>}
             </div>
-
-            {/* /* <!-- Edit/Delete buttons ( Only for creator of this game )  --> */}
-            {/* <div className="buttons">
-                <a href="#" className="button">Edit</a>
-                <a href="#" className="button">Delete</a>
-            </div> */}
+                    {game._ownerId == userId && 
+                            <div className="buttons">
+                                <Link className="button">Edit</Link>
+                                <Link onClick={deleteButtonClickHandler} className="button">Delete</Link>
+                            </div>
+                    }
             
 
 

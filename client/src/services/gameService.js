@@ -19,3 +19,9 @@ export const create = async (data) => {
 
     return result
 }
+
+export const del = async (gameId) => {
+    const result = await request.del(`${baseUrl}/${gameId}`)
+
+    return result
+}

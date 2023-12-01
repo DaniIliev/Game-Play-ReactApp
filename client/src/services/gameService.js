@@ -25,3 +25,9 @@ export const del = async (gameId) => {
 
     return result
 }
+
+export const put = async (gameId, data) => {
+    const result = await request.PUT(`${baseUrl}/${gameId}`, data)
+
+    return result
+}

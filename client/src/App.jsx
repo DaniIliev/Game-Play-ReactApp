@@ -9,6 +9,7 @@ import Catalog from './components/catalog/Catalog'
 import GameDetails from './components/details/GameDetails'
 import Logout from './components/logout/Logout'
 import { AuthProvider } from './context/userContext'
+import EditComponent from './components/game-edit/EditComponent'
 
 function App() {
 
@@ -26,6 +27,7 @@ function App() {
               <Route path='/user/register' element={<Register/>}/>
               <Route path='/user/logout' element={<Logout/>}/>
               <Route path='/create-game' element={<Create/>} />
+              <Route path='/game-edit/:gameId' element={<EditComponent/>}/>
           </Routes>
 
         </div>

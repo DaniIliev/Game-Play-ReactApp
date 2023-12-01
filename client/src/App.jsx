@@ -11,11 +11,6 @@ import Logout from './components/logout/Logout'
 import { AuthProvider } from './context/userContext'
 
 function App() {
-  // const [auth, setAuth] = useState(() => {
-  //   localStorage.removeItem('accessToken')
-
-  //   return {}
-  // })
 
   return (
     <>

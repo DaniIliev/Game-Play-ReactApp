@@ -14,11 +14,11 @@ export const create = async (gameId, comment) => {
 
 export const getAll = async (gameId) => {
     const query = new URLSearchParams({
-        where: `gameId="${gameId}`,
+        where: `gameId="${gameId}"`,
         load: `owner=_ownerId:users`,
-    })
+    });
 
-    const result = await request.get(`${baseUrl}?${query}`)
-    
-    return result
-}
+    const result = await request.get(`${baseUrl}?${query}`);
+
+    return result;
+};

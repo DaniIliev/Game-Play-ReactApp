@@ -13,16 +13,19 @@ export default function GameDetails(){
     
     useEffect(() => {
         commentService.getAll(gameId)
-                .then(result => getAllComments(result))
+                .then(result => {
+                    getAllComments(result)
+                })
                 .catch(err => console.log(err))
 
         gameService.getOne(gameId)
-                .then((data) => console.log(data))
+                .then((data) => setGame(data))
                 .catch((err) => console.log(err))
     }, [gameId])
 
     const addCommentHandler = async (e) => {
         e.preventDefault()
+        console.log('in')
 
         const formData = new FormData(e.currentTarget);
 
@@ -30,9 +33,10 @@ export default function GameDetails(){
             gameId,
             formData.get('comment')
         )
+        console.log(newComment)
         setComment(state => [...state, {...newComment, author: {email}}])
     }
-
+    console.log(comments)
     return(
         <section id="game-details">
         <h1>Game Details</h1>
@@ -53,17 +57,14 @@ export default function GameDetails(){
             <div className="details-comments">
                 <h2>Comments:</h2>
                 <ul>
-                    {/* <!-- list all comments for current game (If any) --> */}
-                    {comments && (
-                        comments.map(comment => {
-                            <li className="comment">
-                            <p>{comment}</p>
+                {comments.map(({ _id, comment, owner: { email } }) => (
+                            <li key={_id} className="comment">
+                                <p>{email}: {comment}</p>
                             </li>
-                        })
-                    )}
+                        ))}
                 </ul>
                 {/* <!-- Display paragraph: If there are no games in the database --> */}
-                <p className="no-comment">No comments.</p>
+                {comments.length === 0 && <p className="no-comment">No comments.</p>}
             </div>
 
             {/* /* <!-- Edit/Delete buttons ( Only for creator of this game )  --> */}
